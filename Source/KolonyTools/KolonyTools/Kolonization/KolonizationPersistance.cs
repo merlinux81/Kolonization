@@ -67,7 +67,9 @@ namespace Kolonization
                 rNode.AddValue("GeologyResearch", r.GeologyResearch);
                 rNode.AddValue("BotanyResearch", r.BotanyResearch);
                 rNode.AddValue("KolonizationResearch", r.KolonizationResearch);
-               
+                rNode.AddValue("Science", r.Science);
+                rNode.AddValue("Rep", r.Rep);
+                rNode.AddValue("Funds", r.Funds);
                 SettingsNode.AddNode(rNode);
             }
 
@@ -151,6 +153,9 @@ namespace Kolonization
             saveEntry.BotanyResearch = logEntry.BotanyResearch;
             saveEntry.GeologyResearch = logEntry.GeologyResearch;
             saveEntry.KolonizationResearch = logEntry.KolonizationResearch;
+            saveEntry.Science = logEntry.Science;
+            saveEntry.Funds = logEntry.Funds;
+            saveEntry.Rep = logEntry.Rep;
             saveEntry.LastUpdate = logEntry.LastUpdate;
             saveEntry.KolonyDate = logEntry.KolonyDate;
         }

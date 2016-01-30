@@ -70,6 +70,9 @@ namespace Kolonization
                 k.GeologyResearch = 0d;
                 k.BotanyResearch = 0d;
                 k.KolonizationResearch = 0d;
+                k.Science = 0d;
+                k.Rep = 0d;
+                k.Funds = 0d;
                 TrackLogEntry(k);
             }
 
@@ -95,6 +98,9 @@ namespace Kolonization
             newEntry.GeologyResearch = logEntry.GeologyResearch;
             newEntry.BotanyResearch = logEntry.BotanyResearch;
             newEntry.KolonizationResearch = logEntry.KolonizationResearch;
+            newEntry.Science = logEntry.Science;
+            newEntry.Funds = logEntry.Funds;
+            newEntry.Rep = logEntry.Rep; 
             KolonizationScenario.Instance.settings.SaveLogEntryNode(newEntry);
         }
     }

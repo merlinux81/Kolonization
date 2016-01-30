@@ -9,5 +9,8 @@
         public double GeologyResearch { get; set; }
         public double BotanyResearch { get; set; }
         public double KolonizationResearch { get; set; }
+        public double Science { get; set; }
+        public double Rep { get; set; }
+        public double Funds { get; set; }
     }
 }

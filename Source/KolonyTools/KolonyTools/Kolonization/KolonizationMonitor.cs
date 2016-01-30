@@ -87,10 +87,10 @@ namespace Kolonization
             try
             {
                 GUILayout.BeginHorizontal();
-                GUILayout.Label(String.Format("<color=#FFFFFF>Body Name</color>"), _labelStyle, GUILayout.Width(135));
-                GUILayout.Label(String.Format("<color=#FFD900>Geology</color>"), _labelStyle, GUILayout.Width(80));
-                GUILayout.Label(String.Format("<color=#FFD900>Botany</color>"), _labelStyle, GUILayout.Width(80));
-                GUILayout.Label(String.Format("<color=#FFD900>Kolonization</color>"), _labelStyle, GUILayout.Width(80));
+                GUILayout.Label(String.Format("Body Name"), _labelStyle, GUILayout.Width(135));
+                GUILayout.Label(String.Format("Geology"), _labelStyle, GUILayout.Width(80));
+                GUILayout.Label(String.Format("Botany"), _labelStyle, GUILayout.Width(80));
+                GUILayout.Label(String.Format("Kolonization"), _labelStyle, GUILayout.Width(80));
                 GUILayout.EndHorizontal();
 
                 var planetList = KolonizationManager.Instance.KolonizationInfo.Select(p => p.BodyIndex).Distinct();
@@ -109,9 +109,9 @@ namespace Kolonization
                     }
                     GUILayout.BeginHorizontal();
                     GUILayout.Label(String.Format("<color=#FFFFFF>{0}</color>", body.bodyName), _labelStyle, GUILayout.Width(135));
-                    GUILayout.Label(String.Format("<color=#FFD900>{0:n2}</color>", geo / 100d), _labelStyle, GUILayout.Width(80));
-                    GUILayout.Label(String.Format("<color=#FFD900>{0:n2}</color>", bot / 100d), _labelStyle, GUILayout.Width(80));
-                    GUILayout.Label(String.Format("<color=#FFD900>{0:n2}</color>", kol / 100d), _labelStyle, GUILayout.Width(80));
+                    GUILayout.Label(String.Format("<color=#FFD900>{0:n2}</color>", geo / 1000d), _labelStyle, GUILayout.Width(80));
+                    GUILayout.Label(String.Format("<color=#FFD900>{0:n2}</color>", bot / 1000d), _labelStyle, GUILayout.Width(80));
+                    GUILayout.Label(String.Format("<color=#FFD900>{0:n2}</color>", kol / 1000d), _labelStyle, GUILayout.Width(80));
                     GUILayout.EndHorizontal();
                 }
             }

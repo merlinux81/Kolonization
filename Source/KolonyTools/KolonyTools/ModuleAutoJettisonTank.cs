@@ -12,6 +12,9 @@ namespace KolonyTools
 
         public void FixedUpdate()
         {
+            if (!HighLogic.LoadedSceneIsFlight)
+                return;
+
             if (vessel.altitude > JettisonAltitude)
             {
                 var res = part.Resources.list.FirstOrDefault(pr => pr.resourceName == ResourceName);
