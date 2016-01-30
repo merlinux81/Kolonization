@@ -94,7 +94,7 @@ namespace PlanetaryLogistics
                     {
                         GUILayout.BeginHorizontal();
                         GUILayout.Label("", _labelStyle, GUILayout.Width(30));
-                        GUILayout.Label(log.vesselIdName, _labelStyle, GUILayout.Width(120));
+                        GUILayout.Label(log.ResourceName, _labelStyle, GUILayout.Width(120));
                         GUILayout.Label(String.Format("<color=#FFD900>{0:n2}</color>", log.StoredQuantity), _labelStyle, GUILayout.Width(80));
                         GUILayout.EndHorizontal();
                     }
@@ -136,7 +136,7 @@ namespace PlanetaryLogistics
     public class PlanetaryLogisticsDisplayStat
     {
         public string PlanetName { get; set; }
-        public string vesselIdName { get; set; }
+        public string ResourceName { get; set; }
         public double StoredAmount { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using KolonyTools;
 using UnityEngine;
 using Random = System.Random;
 
@@ -108,9 +109,9 @@ namespace Kolonization
                     }
                     GUILayout.BeginHorizontal();
                     GUILayout.Label(String.Format("<color=#FFFFFF>{0}</color>", body.bodyName), _labelStyle, GUILayout.Width(135));
-                    GUILayout.Label(String.Format("<color=#FFD900>{0:n2}</color>", geo), _labelStyle, GUILayout.Width(80));
-                    GUILayout.Label(String.Format("<color=#FFD900>{0:n2}</color>", bot), _labelStyle, GUILayout.Width(80));
-                    GUILayout.Label(String.Format("<color=#FFD900>{0:n2}</color>", kol), _labelStyle, GUILayout.Width(80));
+                    GUILayout.Label(String.Format("<color=#FFD900>{0:n2}</color>", geo / 100d), _labelStyle, GUILayout.Width(80));
+                    GUILayout.Label(String.Format("<color=#FFD900>{0:n2}</color>", bot / 100d), _labelStyle, GUILayout.Width(80));
+                    GUILayout.Label(String.Format("<color=#FFD900>{0:n2}</color>", kol / 100d), _labelStyle, GUILayout.Width(80));
                     GUILayout.EndHorizontal();
                 }
             }

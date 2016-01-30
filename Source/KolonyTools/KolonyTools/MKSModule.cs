@@ -2,6 +2,7 @@ using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using Kolonization;
 using USITools;
 
 
@@ -367,13 +368,7 @@ namespace KolonyTools
             }
         }
 
-        public override void OnStart(StartState state)
-        {
-            part.force_activate();
-        }
-
-
-        public override void OnFixedUpdate()
+        public void FixedUpdate()
         {
             if (!HighLogic.LoadedSceneIsFlight)
                 return;
@@ -381,13 +376,51 @@ namespace KolonyTools
             if (Math.Abs(lastCheck - Planetarium.GetUniversalTime()) < checkTime)
                 return;
 
-            lastCheck = Planetarium.GetUniversalTime(); 
+            lastCheck = Planetarium.GetUniversalTime();
+
+            UpdateKolonizationStats();
             
             var conEff = GetEfficiencyRate();
             foreach (var con in part.FindModulesImplementing<ModuleResourceConverter>())
             {
                 con.EfficiencyBonus = conEff;
             }
+        }
+
+        private KolonizationEntry UpdateKolonizationStats()
+        {
+            var k = KolonizationManager.Instance.FetchLogEntry(vessel.id.ToString(), vessel.mainBody.flightGlobalsIndex);
+            
+            //No kolonization on Kerbin!
+            if (vessel.mainBody == FlightGlobals.GetHomeBody())
+                return k;
+
+
+            if (Planetarium.GetUniversalTime() - k.LastUpdate < checkTime)
+                return k;
+
+            var numPilots = GetVesselCrewByTrait("Pilot");
+            var numEngineers = GetVesselCrewByTrait("Engineer");
+            var numScientists = GetVesselCrewByTrait("Scientist");
+
+            var elapsedTime = Planetarium.GetUniversalTime() - k.LastUpdate;
+            var orbitMod = 1f;
+            if(!vessel.LandedOrSplashed)
+                orbitMod = KolonizationSetup.Instance.Config.OrbitMultiplier;
+
+            k.LastUpdate = Planetarium.GetUniversalTime();
+            k.BotanyResearch += numScientists * elapsedTime * orbitMod;
+            k.KolonizationResearch += numPilots * elapsedTime * orbitMod;
+            k.GeologyResearch += numEngineers * elapsedTime * orbitMod;
+
+            KolonizationManager.Instance.TrackLogEntry(k);
+            return k;
+        }
+
+        private double GetVesselCrewByTrait(string trait)
+        {
+            var crew = vessel.GetVesselCrew().Where(c => c.experienceTrait.Title == trait);
+            return crew.Count();
         }
 
         private struct EffPart

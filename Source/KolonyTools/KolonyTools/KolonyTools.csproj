@@ -52,6 +52,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddScenarioModules.cs" />
+    <Compile Include="Kolonization\KolonizationConfig.cs" />
+    <Compile Include="Kolonization\KolonizationSetup.cs" />
     <Compile Include="OrbitalLogistics\ComboBox.cs" />
     <Compile Include="OrbitalLogistics\MKSGui.cs" />
     <Compile Include="OrbitalLogistics\MKSLExtensions.cs" />
@@ -65,7 +67,7 @@
     <Compile Include="Kolonization\KolonizationMonitor.cs" />
     <Compile Include="Kolonization\KolonizationPersistance.cs" />
     <Compile Include="Kolonization\KolonizationScenario.cs" />
-    <Compile Include="OrbitalLogistics\MKSModule.cs" />
+    <Compile Include="MKSModule.cs" />
     <Compile Include="OrbitalLogistics.cs" />
     <Compile Include="PlanetaryLogistics\ModulePlanetaryLogistics.cs" />
     <Compile Include="PlanetaryLogistics\PlanetaryLogisticsEntry.cs" />

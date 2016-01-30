@@ -40,30 +40,30 @@ namespace Kolonization
             }
         }
 
-        public bool DoesLogEntryExist(string resource, int body)
+        public bool DoesLogEntryExist(string vesselId, int body)
         {
             //Does a node exist?
-            return KolonizationInfo.Any(n => n.VesselId == resource
+            return KolonizationInfo.Any(n => n.VesselId == vesselId
                 && n.BodyIndex == body);
         }
 
-        public void RemoveLogEntry(string resource, int body)
+        public void RemoveLogEntry(string vesselId, int body)
         {
-            if (!DoesLogEntryExist(resource, body))
+            if (!DoesLogEntryExist(vesselId, body))
                 return;
-            var logEntry = KolonizationInfo.First(n => n.VesselId == resource
+            var logEntry = KolonizationInfo.First(n => n.VesselId == vesselId
                 && n.BodyIndex == body);
             KolonizationInfo.Remove(logEntry);
             //For saving to our scenario data
             KolonizationScenario.Instance.settings.DeleteStatusNode(logEntry);
         }
 
-        public KolonizationEntry FetchLogEntry(string resource, int body)
+        public KolonizationEntry FetchLogEntry(string vesselId, int body)
         {
-            if (!DoesLogEntryExist(resource, body))
+            if (!DoesLogEntryExist(vesselId, body))
             {
                 var k = new KolonizationEntry();
-                k.VesselId = resource;
+                k.VesselId = vesselId;
                 k.BodyIndex = body;
                 k.LastUpdate = Planetarium.GetUniversalTime();
                 k.KolonyDate = Planetarium.GetUniversalTime();
@@ -73,7 +73,7 @@ namespace Kolonization
                 TrackLogEntry(k);
             }
 
-            var logEntry = KolonizationInfo.FirstOrDefault(n => n.VesselId == resource
+            var logEntry = KolonizationInfo.FirstOrDefault(n => n.VesselId == vesselId
                 && n.BodyIndex == body);
             return logEntry;
         }

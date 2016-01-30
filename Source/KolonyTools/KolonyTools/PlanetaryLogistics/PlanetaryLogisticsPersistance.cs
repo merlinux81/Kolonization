@@ -61,7 +61,7 @@ namespace PlanetaryLogistics
             {
                 var rNode = new ConfigNode("LOGISTICS_ENTRY");
                 rNode.AddValue("BodyIndex", r.BodyIndex);
-                rNode.AddValue("vesselIdName", r.vesselIdName);
+                rNode.AddValue("ResourceName", r.ResourceName);
                 rNode.AddValue("StoredQuantity", r.StoredQuantity);
                 SettingsNode.AddNode(rNode);
             }
@@ -103,7 +103,7 @@ namespace PlanetaryLogistics
         public void AddStatusNode(PlanetaryLogisticsEntry logEntry)
         {
             if (_LogInfo.Any(n => n.BodyIndex == logEntry.BodyIndex
-                && n.vesselIdName == logEntry.vesselIdName))
+                && n.ResourceName == logEntry.ResourceName))
                 return;
             _LogInfo.Add(logEntry);
         }
@@ -111,10 +111,10 @@ namespace PlanetaryLogistics
         public void DeleteStatusNode(PlanetaryLogisticsEntry logEntry)
         {
             if (!_LogInfo.Any(n => n.BodyIndex == logEntry.BodyIndex
-                && n.vesselIdName == logEntry.vesselIdName))
+                && n.ResourceName == logEntry.ResourceName))
                 return;
             var l = _LogInfo.First(n => n.BodyIndex == logEntry.BodyIndex
-                && n.vesselIdName == logEntry.vesselIdName);
+                && n.ResourceName == logEntry.ResourceName);
             _LogInfo.Remove(l);
         }
 
@@ -133,12 +133,12 @@ namespace PlanetaryLogistics
         {
             PlanetaryLogisticsEntry saveEntry =
                 _LogInfo.FirstOrDefault(n => n.BodyIndex == logEntry.BodyIndex
-                && n.vesselIdName == logEntry.vesselIdName);
+                && n.ResourceName == logEntry.ResourceName);
 
             if (saveEntry == null)
             {
                 saveEntry = new PlanetaryLogisticsEntry();
-                saveEntry.vesselIdName = logEntry.vesselIdName;
+                saveEntry.ResourceName = logEntry.ResourceName;
                 saveEntry.BodyIndex = logEntry.BodyIndex;
 
                 _LogInfo.Add(saveEntry);

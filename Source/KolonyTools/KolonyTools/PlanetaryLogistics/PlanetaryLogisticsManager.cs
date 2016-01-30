@@ -43,7 +43,7 @@ namespace PlanetaryLogistics
         public bool DoesLogEntryExist(string vesselId, int body)
         {
             //Does a node exist?
-            return PlanetaryLogisticsInfo.Any(n => n.vesselIdName == vesselId
+            return PlanetaryLogisticsInfo.Any(n => n.ResourceName == vesselId
                 && n.BodyIndex == body);
         }
 
@@ -51,25 +51,25 @@ namespace PlanetaryLogistics
         {
             if (!DoesLogEntryExist(vesselId,body))
                 return;
-            var logEntry = PlanetaryLogisticsInfo.First(n => n.vesselIdName == vesselId
+            var logEntry = PlanetaryLogisticsInfo.First(n => n.ResourceName == vesselId
                 && n.BodyIndex == body);
             PlanetaryLogisticsInfo.Remove(logEntry);
             //For saving to our scenario data
             PlanetaryLogisticsScenario.Instance.settings.DeleteStatusNode(logEntry);
         }
 
-        public PlanetaryLogisticsEntry FetchLogEntry(string vesselId, int body)
+        public PlanetaryLogisticsEntry FetchLogEntry(string ResourceName, int body)
         {
-            if (!DoesLogEntryExist(vesselId, body))
+            if (!DoesLogEntryExist(ResourceName, body))
             {
                 var k = new PlanetaryLogisticsEntry();
-                k.vesselIdName = vesselId;
+                k.ResourceName = ResourceName;
                 k.BodyIndex = body;
                 k.StoredQuantity = 0d;
                 TrackLogEntry(k);
             }
 
-            var logEntry = PlanetaryLogisticsInfo.FirstOrDefault(n => n.vesselIdName == vesselId
+            var logEntry = PlanetaryLogisticsInfo.FirstOrDefault(n => n.ResourceName == ResourceName
                 && n.BodyIndex == body);
             return logEntry;
         }
@@ -77,12 +77,12 @@ namespace PlanetaryLogistics
         public void TrackLogEntry(PlanetaryLogisticsEntry logEntry)
         {
             PlanetaryLogisticsEntry newEntry =
-                PlanetaryLogisticsInfo.FirstOrDefault(n => n.vesselIdName == logEntry.vesselIdName
+                PlanetaryLogisticsInfo.FirstOrDefault(n => n.ResourceName == logEntry.ResourceName
                 && n.BodyIndex == logEntry.BodyIndex);
             if (newEntry == null)
             {
                 newEntry = new PlanetaryLogisticsEntry();
-                newEntry.vesselIdName = logEntry.vesselIdName;
+                newEntry.ResourceName = logEntry.ResourceName;
                 newEntry.BodyIndex = logEntry.BodyIndex;
                 PlanetaryLogisticsInfo.Add(newEntry);
             }
