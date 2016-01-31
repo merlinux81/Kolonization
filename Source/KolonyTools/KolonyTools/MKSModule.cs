@@ -12,6 +12,7 @@ namespace KolonyTools
     {
         private double lastCheck;
         private double checkTime = 5f;
+        private bool rewardsChecked;
 
         [KSPField]
         public bool calculateEfficiency = true;
@@ -353,10 +354,6 @@ namespace KolonyTools
             return _efficiencyRate;
         }
 
-        public override void OnStart(StartState state)
-        {
-            CheckRewards();
-        }
 
         public override void OnLoad(ConfigNode node)
         {
@@ -383,8 +380,8 @@ namespace KolonyTools
             {
                 if (k.Science > 1)
                 {
-                    ResearchAndDevelopment.Instance.AddScience((float) k.Science, TransactionReasons.None);
-                    var msg = String.Format("Added {0:d2} Science", k.Science);
+                    ResearchAndDevelopment.Instance.AddScience((float)k.Science, TransactionReasons.ContractReward);
+                    var msg = String.Format("Added {0:n2} Science", k.Science);
                     ScreenMessages.PostScreenMessage(msg, 5f, ScreenMessageStyle.UPPER_CENTER);
                     k.Science = 0d;
                 }
@@ -393,8 +390,8 @@ namespace KolonyTools
             {
                 if (k.Funds > 1)
                 {
-                    Funding.Instance.AddFunds(k.Funds, TransactionReasons.None);
-                    var msg = String.Format("Added {0:d2} Funds", k.Funds);
+                    Funding.Instance.AddFunds(k.Funds, TransactionReasons.ContractReward);
+                    var msg = String.Format("Added {0:n2} Funds", k.Funds);
                     ScreenMessages.PostScreenMessage(msg, 5f, ScreenMessageStyle.UPPER_CENTER);
                     k.Funds = 0d;
                 }
@@ -403,8 +400,8 @@ namespace KolonyTools
             {
                 if (k.Rep > 1)
                 {
-                    Reputation.Instance.AddReputation((float) k.Rep, TransactionReasons.None);
-                    var msg = String.Format("Added {0:d2} Reputation", k.Rep);
+                    Reputation.Instance.AddReputation((float) k.Rep, TransactionReasons.ContractReward);
+                    var msg = String.Format("Added {0:n2} Reputation", k.Rep);
                     ScreenMessages.PostScreenMessage(msg, 5f, ScreenMessageStyle.UPPER_CENTER);
                     k.Rep = 0d;
                 }
@@ -420,6 +417,12 @@ namespace KolonyTools
 
             if (Math.Abs(lastCheck - Planetarium.GetUniversalTime()) < checkTime)
                 return;
+
+            if (!rewardsChecked)
+            {
+                CheckRewards();
+                rewardsChecked = true;
+            }
 
             lastCheck = Planetarium.GetUniversalTime();
 
@@ -493,6 +496,22 @@ namespace KolonyTools
             k.Funds += funds;
             k.Rep += rep;
             KolonizationManager.Instance.TrackLogEntry(k);
+            
+            //Update the hab bonus
+            var thisBodyInfo = KolonizationManager.Instance.KolonizationInfo.Where(b=>b.BodyIndex == vessel.mainBody.flightGlobalsIndex);
+            var  habBonus = thisBodyInfo.Sum(b=>b.KolonizationResearch);
+            habBonus = Math.Sqrt(habBonus);
+            habBonus /= KolonizationSetup.Instance.Config.EfficiencyMultiplier;
+            USI_GlobalBonuses.Instance.SaveHabBonus(vessel.mainBody.flightGlobalsIndex,habBonus);
+
+            //Update the drill bonus
+            foreach (var d in vessel.FindPartModulesImplementing<BaseDrill>())
+            {
+                var geoBonus = thisBodyInfo.Sum(b => b.GeologyResearch);
+                geoBonus = Math.Sqrt(habBonus);
+                geoBonus /= KolonizationSetup.Instance.Config.EfficiencyMultiplier;
+                d.EfficiencyBonus = (float)geoBonus;
+            }
         }
 
 

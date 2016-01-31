@@ -48,7 +48,7 @@ namespace Kolonization
 
         private void GuiOn()
         {
-            RenderingManager.AddToPostDrawQueue(144, Ondraw);
+            RenderingManager.AddToPostDrawQueue(145, Ondraw);
         }
 
         public void Start()
@@ -59,7 +59,7 @@ namespace Kolonization
 
         private void GuiOff()
         {
-            RenderingManager.RemoveFromPostDrawQueue(144, Ondraw);
+            RenderingManager.RemoveFromPostDrawQueue(145, Ondraw);
         }
 
 

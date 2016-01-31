@@ -43,7 +43,7 @@ namespace PlanetaryLogistics
 
         private void GuiOn()
         {
-            RenderingManager.AddToPostDrawQueue(144, Ondraw);
+            RenderingManager.AddToPostDrawQueue(146, Ondraw);
         }
 
         public void Start()
@@ -54,7 +54,7 @@ namespace PlanetaryLogistics
 
         private void GuiOff()
         {
-            RenderingManager.RemoveFromPostDrawQueue(144, Ondraw);
+            RenderingManager.RemoveFromPostDrawQueue(146, Ondraw);
         }
 
 
