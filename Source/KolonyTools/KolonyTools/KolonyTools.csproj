@@ -51,20 +51,37 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ComboBox.cs" />
-    <Compile Include="MKSGui.cs" />
-    <Compile Include="MKSLExtensions.cs" />
-    <Compile Include="MKSLlocal.cs" />
-    <Compile Include="MKSLresource.cs" />
-    <Compile Include="MKSLtransfer.cs" />
+    <Compile Include="AddScenarioModules.cs" />
+    <Compile Include="Kolonization\KolonizationConfig.cs" />
+    <Compile Include="Kolonization\KolonizationSetup.cs" />
+    <Compile Include="OrbitalLogistics\ComboBox.cs" />
+    <Compile Include="OrbitalLogistics\MKSGui.cs" />
+    <Compile Include="OrbitalLogistics\MKSLExtensions.cs" />
+    <Compile Include="OrbitalLogistics\MKSLlocal.cs" />
+    <Compile Include="OrbitalLogistics\MKSLresource.cs" />
+    <Compile Include="OrbitalLogistics\MKSLtransfer.cs" />
+    <Compile Include="ModuleAutoJettisonTank.cs" />
+    <Compile Include="ModuleBulkConverter.cs" />
+    <Compile Include="Kolonization\KolonizationEntry.cs" />
+    <Compile Include="Kolonization\KolonizationManager.cs" />
+    <Compile Include="Kolonization\KolonizationMonitor.cs" />
+    <Compile Include="Kolonization\KolonizationPersistance.cs" />
+    <Compile Include="Kolonization\KolonizationScenario.cs" />
     <Compile Include="MKSModule.cs" />
-    <Compile Include="SpaceAcademy.cs" />
     <Compile Include="OrbitalLogistics.cs" />
+    <Compile Include="PlanetaryLogistics\ModulePlanetaryLogistics.cs" />
+    <Compile Include="PlanetaryLogistics\PlanetaryLogisticsEntry.cs" />
+    <Compile Include="PlanetaryLogistics\PlanetaryLogisticsManager.cs" />
+    <Compile Include="PlanetaryLogistics\PlanetaryLogisticsMonitor.cs" />
+    <Compile Include="PlanetaryLogistics\PlanetaryLogisticsPersistance.cs" />
+    <Compile Include="PlanetaryLogistics\PlanetaryLogisticsScenario.cs" />
+    <Compile Include="SpaceAcademy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StationManager.cs" />
     <Compile Include="Utilities.cs" />
-    <Compile Include="Window.cs" />
+    <Compile Include="OrbitalLogistics\Window.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
 Other similar extension points exist, see Microsoft.Common.targets.

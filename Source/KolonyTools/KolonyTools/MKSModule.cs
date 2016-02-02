@@ -2,6 +2,7 @@ using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using Kolonization;
 using USITools;
 
 
@@ -11,6 +12,7 @@ namespace KolonyTools
     {
         private double lastCheck;
         private double checkTime = 5f;
+        private bool rewardsChecked;
 
         [KSPField]
         public bool calculateEfficiency = true;
@@ -352,6 +354,7 @@ namespace KolonyTools
             return _efficiencyRate;
         }
 
+
         public override void OnLoad(ConfigNode node)
         {
             try
@@ -367,13 +370,47 @@ namespace KolonyTools
             }
         }
 
-        public override void OnStart(StartState state)
+        private void CheckRewards()
         {
-            part.force_activate();
+            if (!HighLogic.LoadedSceneIsFlight)
+                return;
+
+            var k = KolonizationManager.Instance.FetchLogEntry(vessel.id.ToString(), vessel.mainBody.flightGlobalsIndex);
+            if (ResearchAndDevelopment.Instance != null)
+            {
+                if (k.Science > 1)
+                {
+                    ResearchAndDevelopment.Instance.AddScience((float)k.Science, TransactionReasons.ContractReward);
+                    var msg = String.Format("Added {0:n2} Science", k.Science);
+                    ScreenMessages.PostScreenMessage(msg, 5f, ScreenMessageStyle.UPPER_CENTER);
+                    k.Science = 0d;
+                }
+            }
+            if (Funding.Instance != null)
+            {
+                if (k.Funds > 1)
+                {
+                    Funding.Instance.AddFunds(k.Funds, TransactionReasons.ContractReward);
+                    var msg = String.Format("Added {0:n2} Funds", k.Funds);
+                    ScreenMessages.PostScreenMessage(msg, 5f, ScreenMessageStyle.UPPER_CENTER);
+                    k.Funds = 0d;
+                }
+            }
+            if (Reputation.Instance != null)
+            {
+                if (k.Rep > 1)
+                {
+                    Reputation.Instance.AddReputation((float) k.Rep, TransactionReasons.ContractReward);
+                    var msg = String.Format("Added {0:n2} Reputation", k.Rep);
+                    ScreenMessages.PostScreenMessage(msg, 5f, ScreenMessageStyle.UPPER_CENTER);
+                    k.Rep = 0d;
+                }
+            }
+
+            KolonizationManager.Instance.TrackLogEntry(k);            
         }
 
-
-        public override void OnFixedUpdate()
+        public void FixedUpdate()
         {
             if (!HighLogic.LoadedSceneIsFlight)
                 return;
@@ -381,13 +418,108 @@ namespace KolonyTools
             if (Math.Abs(lastCheck - Planetarium.GetUniversalTime()) < checkTime)
                 return;
 
-            lastCheck = Planetarium.GetUniversalTime(); 
-            
+            if (!rewardsChecked)
+            {
+                CheckRewards();
+                rewardsChecked = true;
+            }
+
+            lastCheck = Planetarium.GetUniversalTime();
+
             var conEff = GetEfficiencyRate();
+            UpdateKolonizationStats();
+            var kBonus = Math.Max(KolonizationSetup.Instance.Config.MinBaseBonus,GetPlanetaryBonus());
+            kBonus += KolonizationSetup.Instance.Config.StartingBaseBonus;
+            conEff *= (float)kBonus;
+            
             foreach (var con in part.FindModulesImplementing<ModuleResourceConverter>())
             {
                 con.EfficiencyBonus = conEff;
             }
+        }
+
+        private double GetPlanetaryBonus()
+        {
+            var thisBodyInfo = KolonizationManager.Instance.KolonizationInfo.Where(k=>k.BodyIndex == vessel.mainBody.flightGlobalsIndex);
+            var bonus = thisBodyInfo.Sum(k=>k.GeologyResearch);
+            if(PrimarySkill == "Pilot")
+                bonus = thisBodyInfo.Sum(k=>k.KolonizationResearch);
+            else if (PrimarySkill == "Scientist")
+                bonus = thisBodyInfo.Sum(k=>k.BotanyResearch);
+            
+            bonus = Math.Sqrt(bonus);
+            bonus /= KolonizationSetup.Instance.Config.EfficiencyMultiplier;
+            return bonus;
+        }
+
+
+
+        private void UpdateKolonizationStats()
+        {
+            
+            //No kolonization on Kerbin!
+            if (vessel.mainBody == FlightGlobals.GetHomeBody())
+                return;
+
+            var k = KolonizationManager.Instance.FetchLogEntry(vessel.id.ToString(), vessel.mainBody.flightGlobalsIndex);
+
+            if (Planetarium.GetUniversalTime() - k.LastUpdate < checkTime)
+            {
+                return;
+            }
+
+            var numPilots = GetPartCrewByTrait("Pilot");
+            var numEngineers = GetPartCrewByTrait("Engineer");
+            var numScientists = GetPartCrewByTrait("Scientist");
+
+            var elapsedTime = Planetarium.GetUniversalTime() - k.LastUpdate;
+            var orbitMod = 1f;
+            if(!vessel.LandedOrSplashed)
+                orbitMod = KolonizationSetup.Instance.Config.OrbitMultiplier;
+
+            var scienceBase = numScientists * elapsedTime * orbitMod;
+            var repBase = numPilots * elapsedTime * orbitMod;
+            var fundsBase = numEngineers * elapsedTime * orbitMod;
+            
+            k.LastUpdate = Planetarium.GetUniversalTime();
+            k.BotanyResearch += scienceBase;
+            k.KolonizationResearch += repBase;
+            k.GeologyResearch += fundsBase;
+            
+            
+            var mult = vessel.mainBody.scienceValues.RecoveryValue;
+            var science = scienceBase*KolonizationSetup.Instance.Config.ScienceMultiplier*mult;
+            var rep = repBase*KolonizationSetup.Instance.Config.RepMultiplier*mult;
+            var funds = fundsBase*KolonizationSetup.Instance.Config.FundsMultiplier*mult;
+
+            k.Science += science;
+            k.Funds += funds;
+            k.Rep += rep;
+            KolonizationManager.Instance.TrackLogEntry(k);
+            
+            //Update the hab bonus
+            var thisBodyInfo = KolonizationManager.Instance.KolonizationInfo.Where(b=>b.BodyIndex == vessel.mainBody.flightGlobalsIndex);
+            var  habBonus = thisBodyInfo.Sum(b=>b.KolonizationResearch);
+            habBonus = Math.Sqrt(habBonus);
+            habBonus /= KolonizationSetup.Instance.Config.EfficiencyMultiplier;
+            USI_GlobalBonuses.Instance.SaveHabBonus(vessel.mainBody.flightGlobalsIndex,habBonus);
+
+            //Update the drill bonus
+            foreach (var d in vessel.FindPartModulesImplementing<BaseDrill>())
+            {
+                var geoBonus = thisBodyInfo.Sum(b => b.GeologyResearch);
+                geoBonus = Math.Sqrt(habBonus);
+                geoBonus /= KolonizationSetup.Instance.Config.EfficiencyMultiplier;
+                d.EfficiencyBonus = (float)geoBonus;
+            }
+        }
+
+
+
+        private double GetPartCrewByTrait(string trait)
+        {
+            var crew = part.protoModuleCrew.Where(c => c.experienceTrait.Title == trait);
+            return crew.Count();
         }
 
         private struct EffPart
