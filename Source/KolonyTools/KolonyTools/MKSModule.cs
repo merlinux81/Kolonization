@@ -468,9 +468,9 @@ namespace KolonyTools
                 return;
             }
 
-            var numPilots = GetVesselCrewByTrait("Pilot");
-            var numEngineers = GetVesselCrewByTrait("Engineer");
-            var numScientists = GetVesselCrewByTrait("Scientist");
+            var numPilots = GetPartCrewByTrait("Pilot");
+            var numEngineers = GetPartCrewByTrait("Engineer");
+            var numScientists = GetPartCrewByTrait("Scientist");
 
             var elapsedTime = Planetarium.GetUniversalTime() - k.LastUpdate;
             var orbitMod = 1f;
@@ -516,9 +516,9 @@ namespace KolonyTools
 
 
 
-        private double GetVesselCrewByTrait(string trait)
+        private double GetPartCrewByTrait(string trait)
         {
-            var crew = vessel.GetVesselCrew().Where(c => c.experienceTrait.Title == trait);
+            var crew = part.protoModuleCrew.Where(c => c.experienceTrait.Title == trait);
             return crew.Count();
         }
 
