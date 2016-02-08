@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using KolonyTools;
 using UnityEngine;
+using USITools;
 using Random = System.Random;
 
 namespace Kolonization
@@ -28,6 +29,7 @@ namespace Kolonization
     public class KolonizationMonitor : MonoBehaviour
     {
         private ApplicationLauncherButton kolonyButton;
+        private IButton kolonyTButton;
         private Rect _windowPosition = new Rect(300, 60, 620, 400);
         private GUIStyle _windowStyle;
         private GUIStyle _labelStyle;
@@ -35,15 +37,27 @@ namespace Kolonization
         private GUIStyle _scrollStyle;
         private Vector2 scrollPos = Vector2.zero;
         private bool _hasInitStyles = false;
+        private bool windowVisible;
 
         void Awake()
         {
-            var texture = new Texture2D(36, 36, TextureFormat.RGBA32, false);
-            var textureFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Kolony.png");
-            print("Loading " + textureFile);
-            texture.LoadImage(File.ReadAllBytes(textureFile));
-            this.kolonyButton = ApplicationLauncher.Instance.AddModApplication(GuiOn, GuiOff, null, null, null, null,
-                ApplicationLauncher.AppScenes.ALWAYS, texture);
+            if (ToolbarManager.ToolbarAvailable)
+            {
+                this.kolonyTButton = ToolbarManager.Instance.add("UKS", "kolony");
+                kolonyTButton.TexturePath = "UmbraSpaceIndustries/Kolonization/Kolony24";
+                kolonyTButton.ToolTip = "USI Kolony";
+                kolonyTButton.Enabled = true;
+                kolonyTButton.OnClick += (e) => { if(windowVisible) { GuiOff(); windowVisible = false; } else { GuiOn(); windowVisible = true; } };
+            }
+            else
+            {
+                var texture = new Texture2D(36, 36, TextureFormat.RGBA32, false);
+                var textureFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Kolony.png");
+                print("Loading " + textureFile);
+                texture.LoadImage(File.ReadAllBytes(textureFile));
+                this.kolonyButton = ApplicationLauncher.Instance.AddModApplication(GuiOn, GuiOff, null, null, null, null,
+                    ApplicationLauncher.AppScenes.ALWAYS, texture);
+            }
         }
 
         private void GuiOn()
@@ -130,10 +144,16 @@ namespace Kolonization
 
         internal void OnDestroy()
         {
-            if (kolonyButton == null)
-                return;
-            ApplicationLauncher.Instance.RemoveModApplication(kolonyButton);
-            kolonyButton = null;
+            if (kolonyButton != null)
+            {
+                ApplicationLauncher.Instance.RemoveModApplication(kolonyButton);
+                kolonyButton = null;
+            }
+            else
+            {
+                kolonyTButton.Destroy();
+                kolonyTButton = null;
+            }
         }
 
         private void InitStyles()
