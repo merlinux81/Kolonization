@@ -474,7 +474,7 @@ namespace KolonyTools
             var numScientists = GetVesselCrewByTrait("Scientist");
 
             var elapsedTime = Planetarium.GetUniversalTime() - k.LastUpdate;
-            var orbitMod = 1f;
+            var orbitMod = 1d;
             if(!vessel.LandedOrSplashed)
                 orbitMod = KolonizationSetup.Instance.Config.OrbitMultiplier;
 
