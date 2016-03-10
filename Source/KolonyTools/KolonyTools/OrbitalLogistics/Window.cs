@@ -26,6 +26,7 @@
  */
 
 using KSP.IO;
+using KSP.UI.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;

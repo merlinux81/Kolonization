@@ -7,6 +7,7 @@ using KolonyTools;
 using UnityEngine;
 using USITools;
 using Random = System.Random;
+using KSP.UI.Screens;
 
 namespace Kolonization
 {
