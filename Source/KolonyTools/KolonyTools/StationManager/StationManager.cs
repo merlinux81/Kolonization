@@ -17,6 +17,7 @@ namespace KolonyTools
         private ApplicationLauncherButton stationButton;
         private IButton stationTButton;
         private bool windowVisible;
+        public static bool renderDisplay = false;
 
         private StationView _stationView;
 
@@ -50,6 +51,18 @@ namespace KolonyTools
         {
             if(_stationView == null) _stationView = new StationView(FlightGlobals.ActiveVessel);
             _stationView.SetVisible(false);
+        }
+
+        private void OnGUI()
+        {
+            if (!_stationView.IsVisible())
+                return;
+
+            if (Event.current.type == EventType.Repaint || Event.current.isMouse)
+            {
+                //preDrawQueue
+            }
+            _stationView.DrawWindow();
         }
 
         private void ToggleGui()

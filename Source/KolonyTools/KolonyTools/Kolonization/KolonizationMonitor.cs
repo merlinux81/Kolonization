@@ -39,6 +39,7 @@ namespace Kolonization
         private Vector2 scrollPos = Vector2.zero;
         private bool _hasInitStyles = false;
         private bool windowVisible;
+        public static bool renderDisplay = false;
 
         void Awake()
         {
@@ -61,9 +62,9 @@ namespace Kolonization
             }
         }
 
-        private void GuiOn()
+        public void GuiOn()
         {
-            RenderingManager.AddToPostDrawQueue(145, Ondraw);
+            renderDisplay = true;
         }
 
         public void Start()
@@ -72,9 +73,21 @@ namespace Kolonization
                 InitStyles();
         }
 
-        private void GuiOff()
+        public void GuiOff()
         {
-            RenderingManager.RemoveFromPostDrawQueue(145, Ondraw);
+            renderDisplay = false;
+        }
+
+        private void OnGUI()
+        {
+            if (!renderDisplay)
+                return;
+
+            if (Event.current.type == EventType.Repaint || Event.current.isMouse)
+            {
+                //preDrawQueue
+            }
+            Ondraw();
         }
 
 
@@ -86,12 +99,6 @@ namespace Kolonization
         private void OnWindow(int windowId)
         {
             GenerateWindow();
-        }
-
-        string ColorToHex(Color32 color)
-        {
-            string hex = color.r.ToString("X2") + color.g.ToString("X2") + color.b.ToString("X2");
-            return hex;
         }
 
         private void GenerateWindow()

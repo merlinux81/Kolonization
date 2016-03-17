@@ -17,7 +17,7 @@
     <DebugSymbols>false</DebugSymbols>
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\KSP_11\GameData\UmbraSpaceIndustries\Kolonization\</OutputPath>
+    <OutputPath>..\..\..\..\..\KSP_DEV\GameData\UmbraSpaceIndustries\Kolonization\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -32,11 +32,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\..\KSP_11\KSP_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\..\..\KSP_DEV\KSP_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="KSPUtil">
-      <HintPath>..\..\..\..\..\KSP_11\KSP_Data\Managed\KSPUtil.dll</HintPath>
+      <HintPath>..\..\..\..\..\KSP_DEV\KSP_Data\Managed\KSPUtil.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -46,15 +46,15 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\..\KSP_11\KSP_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\..\KSP_DEV\KSP_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\..\..\KSP_11\KSP_Data\Managed\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\..\..\..\..\KSP_DEV\KSP_Data\Managed\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="USITools">
-      <HintPath>..\..\..\..\..\KSP_11\GameData\000_USITools\USITools.dll</HintPath>
+      <HintPath>..\..\..\..\..\KSP_DEV\GameData\000_USITools\USITools.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -62,6 +62,7 @@
     <Compile Include="AddScenarioModules.cs" />
     <Compile Include="Kolonization\KolonizationConfig.cs" />
     <Compile Include="Kolonization\KolonizationSetup.cs" />
+    <Compile Include="Kolonization_UI.cs" />
     <Compile Include="OrbitalLogistics\ComboBox.cs" />
     <Compile Include="OrbitalLogistics\MKSGui.cs" />
     <Compile Include="OrbitalLogistics\MKSLExtensions.cs" />
@@ -76,7 +77,7 @@
     <Compile Include="Kolonization\KolonizationPersistance.cs" />
     <Compile Include="Kolonization\KolonizationScenario.cs" />
     <Compile Include="MKSModule.cs" />
-    <Compile Include="OrbitalLogistics.cs" />
+    <Compile Include="OrbitalLogistics\OrbitalLogistics.cs" />
     <Compile Include="PlanetaryLogistics\ModulePlanetaryLogistics.cs" />
     <Compile Include="PlanetaryLogistics\PlanetaryLogisticsEntry.cs" />
     <Compile Include="PlanetaryLogistics\PlanetaryLogisticsManager.cs" />
@@ -85,7 +86,7 @@
     <Compile Include="PlanetaryLogistics\PlanetaryLogisticsScenario.cs" />
     <Compile Include="SpaceAcademy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StationManager.cs" />
+    <Compile Include="StationManager\StationManager.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="OrbitalLogistics\Window.cs" />
   </ItemGroup>

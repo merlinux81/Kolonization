@@ -60,10 +60,20 @@ namespace KolonyTools
         private void Awake()
         {
             KnownTransfers = new MKSLTranferList();
-            RenderingManager.AddToPostDrawQueue(144, Ondraw);
             nextchecktime = Planetarium.GetUniversalTime() + 2;          
         }
 
+        private void OnGUI()
+        {
+            if (!_logisticsMasterView.IsVisible())
+                return;
+
+            if (Event.current.type == EventType.Repaint || Event.current.isMouse)
+            {
+                //preDrawQueue
+            }
+            _logisticsMasterView.DrawWindow();
+        }
 
         private MKSLTranferList GetTransfers()
         {
