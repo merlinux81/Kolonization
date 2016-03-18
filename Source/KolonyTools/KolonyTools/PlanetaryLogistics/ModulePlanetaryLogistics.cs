@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using KolonyTools;
 using USITools.Logistics;
 
 namespace PlanetaryLogistics
@@ -33,6 +34,10 @@ namespace PlanetaryLogistics
                 return;
 
             if (Math.Abs(Planetarium.GetUniversalTime() - lastCheck) < CheckFrequency)
+                return;
+
+            var wh = part.FindModuleImplementing<USI_ModuleResourceWarehouse>();
+            if (!wh.transferEnabled)
                 return;
 
             lastCheck = Planetarium.GetUniversalTime();
