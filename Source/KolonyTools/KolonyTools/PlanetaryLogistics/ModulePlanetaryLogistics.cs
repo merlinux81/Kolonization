@@ -24,6 +24,7 @@ namespace PlanetaryLogistics
         public double vesselIdTax = 0.05d;
 
         private double lastCheck;
+        private USI_ModuleResourceWarehouse _wh;
 
         public void FixedUpdate()
         {
@@ -33,14 +34,13 @@ namespace PlanetaryLogistics
             if (!vessel.LandedOrSplashed)
                 return;
 
-            if (Math.Abs(Planetarium.GetUniversalTime() - lastCheck) < CheckFrequency)
+            if (_wh == null)
+                _wh = part.FindModuleImplementing<USI_ModuleResourceWarehouse>();
+
+
+            if (!_wh.transferEnabled)
                 return;
 
-            var wh = part.FindModuleImplementing<USI_ModuleResourceWarehouse>();
-            if (!wh.transferEnabled)
-                return;
-
-            lastCheck = Planetarium.GetUniversalTime();
             foreach (var res in part.Resources.list)
             {
                 LevelvesselIds(res.resourceName);
@@ -58,7 +58,7 @@ namespace PlanetaryLogistics
                 var amtNeeded = (res.maxAmount * FillGoal) - res.amount;
                 if (!(amtNeeded > 0)) 
                     return;
-                
+
                 if (!PlanetaryLogisticsManager.Instance.DoesLogEntryExist(vesselId, body)) 
                     return;
                 
