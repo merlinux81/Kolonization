@@ -55,14 +55,24 @@ namespace KolonyTools
 
         private void OnGUI()
         {
-            if (!_stationView.IsVisible())
-                return;
-
-            if (Event.current.type == EventType.Repaint || Event.current.isMouse)
+            try
             {
-                //preDrawQueue
+                if (_stationView == null)
+                    return;
+
+                if (!_stationView.IsVisible())
+                    return;
+
+                if (Event.current.type == EventType.Repaint || Event.current.isMouse)
+                {
+                    //preDrawQueue
+                }
+                _stationView.DrawWindow();
             }
-            _stationView.DrawWindow();
+            catch (Exception ex)
+            {
+                print("ERROR in StationManager (OnGui) " + ex.Message);
+            }
         }
 
         private void ToggleGui()
