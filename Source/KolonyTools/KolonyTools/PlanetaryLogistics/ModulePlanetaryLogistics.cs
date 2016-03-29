@@ -28,29 +28,22 @@ namespace PlanetaryLogistics
 
         public void FixedUpdate()
         {
-            try
+            if (!HighLogic.LoadedSceneIsFlight)
+                return;
+
+            if (!vessel.LandedOrSplashed)
+                return;
+
+            if (_wh == null)
+                _wh = part.FindModuleImplementing<USI_ModuleResourceWarehouse>();
+
+
+            if (!_wh.transferEnabled)
+                return;
+
+            foreach (var res in part.Resources.list)
             {
-                if (!HighLogic.LoadedSceneIsFlight)
-                    return;
-
-                if (!vessel.LandedOrSplashed)
-                    return;
-
-                if (_wh == null)
-                    _wh = part.FindModuleImplementing<USI_ModuleResourceWarehouse>();
-
-
-                if (!_wh.transferEnabled)
-                    return;
-
-                foreach (var res in part.Resources.list)
-                {
-                    LevelvesselIds(res.resourceName);
-                }
-            }
-            catch (Exception ex)
-            {
-                print("ERROR IN ModulePlanetaryLogistics -> FixedUpdate");
+                LevelvesselIds(res.resourceName);
             }
         }
 

@@ -65,25 +65,14 @@ namespace KolonyTools
 
         private void OnGUI()
         {
-            try
+            if (!_logisticsMasterView.IsVisible())
+                return;
+
+            if (Event.current.type == EventType.Repaint || Event.current.isMouse)
             {
-                if (_logisticsMasterView == null)
-                    return;
-
-                if (!_logisticsMasterView.IsVisible())
-                    return;
-
-                if (Event.current.type == EventType.Repaint || Event.current.isMouse)
-                {
-                    //preDrawQueue
-                }
-                _logisticsMasterView.DrawWindow();
+                //preDrawQueue
             }
-            catch (Exception ex)
-            {
-                print("ERROR in MKSLlocal (OnGui) " + ex.Message);                
-            }
-
+            _logisticsMasterView.DrawWindow();
         }
 
         private MKSLTranferList GetTransfers()

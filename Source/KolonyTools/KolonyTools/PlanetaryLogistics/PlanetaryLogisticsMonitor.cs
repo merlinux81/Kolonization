@@ -75,21 +75,14 @@ namespace PlanetaryLogistics
 
         private void OnGUI()
         {
-            try
-            {
-                if (!renderDisplay)
-                    return;
+            if (!renderDisplay)
+                return;
 
-                if (Event.current.type == EventType.Repaint || Event.current.isMouse)
-                {
-                    //preDrawQueue
-                }
-                Ondraw();
-            }
-            catch (Exception ex)
+            if (Event.current.type == EventType.Repaint || Event.current.isMouse)
             {
-                print("ERROR in PlanetaryLogisticsMonitor (OnGui) " + ex.Message);
+                //preDrawQueue
             }
+            Ondraw();
         }
 
         private void Ondraw()
