@@ -1,3 +1,4 @@
+using KSP.UI.Screens;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -59,10 +60,31 @@ namespace KolonyTools
         private void Awake()
         {
             KnownTransfers = new MKSLTranferList();
-            RenderingManager.AddToPostDrawQueue(144, Ondraw);
             nextchecktime = Planetarium.GetUniversalTime() + 2;          
         }
 
+        private void OnGUI()
+        {
+            try
+            {
+                if (_logisticsMasterView == null)
+                    return;
+
+                if (!_logisticsMasterView.IsVisible())
+                    return;
+
+                if (Event.current.type == EventType.Repaint || Event.current.isMouse)
+                {
+                    //preDrawQueue
+                }
+                _logisticsMasterView.DrawWindow();
+            }
+            catch (Exception ex)
+            {
+                print("ERROR in MKSLlocal (OnGui) " + ex.Message);                
+            }
+
+        }
 
         private MKSLTranferList GetTransfers()
         {
