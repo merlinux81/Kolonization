@@ -35,7 +35,7 @@ using UnityEngine;
 
 namespace KolonyTools
 {
-    public abstract class Window<T> 
+    public abstract class Window<T> : MonoBehaviour
     {
         private int windowId;
         private string configNodeName;

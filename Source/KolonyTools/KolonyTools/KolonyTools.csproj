@@ -77,6 +77,8 @@
     <Compile Include="Kolonization\KolonizationPersistance.cs" />
     <Compile Include="Kolonization\KolonizationScenario.cs" />
     <Compile Include="MKSModule.cs" />
+    <Compile Include="OrbitalLogistics\MKSMainGui.cs" />
+    <Compile Include="OrbitalLogistics\MKSTransferCreateView.cs" />
     <Compile Include="OrbitalLogistics\OrbitalLogistics.cs" />
     <Compile Include="PlanetaryLogistics\ModulePlanetaryLogistics.cs" />
     <Compile Include="PlanetaryLogistics\PlanetaryLogisticsEntry.cs" />
