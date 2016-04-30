@@ -17,11 +17,11 @@ namespace KolonyTools
         private ApplicationLauncherButton stationButton;
         private IButton stationTButton;
         private bool windowVisible;
-        public static bool renderDisplay = false;
+        //public static bool renderDisplay = false;
 
         private StationView _stationView;
 
-        public StationManager()
+        void Awake()
         {
             if (ToolbarManager.ToolbarAvailable)
             {
